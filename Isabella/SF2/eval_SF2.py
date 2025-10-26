@@ -5,6 +5,7 @@ from stable_baselines3 import PPO, A2C
 import retro
 from stable_baselines3.common.atari_wrappers import WarpFrame
 from collections import deque
+import time
 # Evaluation script for Street Fighter II agent
 
 # Wrapper to stack frames
@@ -76,10 +77,10 @@ def run_episode(model, game, state, persona, render=False):
     env = WarpFrame(env, width=84, height=84)
     env = FrameStackWrapper(env, k=4)
     
-    obs, initial_info = env.reset()
+    obs, initial_info = env.reset(seed=None)
     done = False
     steps = 0
-    
+    start_time = time.time()
     # Track match wins/losses
     prev_matches_won = 0
     prev_enemy_matches_won = 0
@@ -87,7 +88,7 @@ def run_episode(model, game, state, persona, render=False):
     match_losses = 0
 
     while not done:
-        action, _ = model.predict(obs, deterministic=True)
+        action, _ = model.predict(obs, deterministic=False)
         obs, r, done, truncated, info = env.step(action)
         steps += 1
         
@@ -104,7 +105,9 @@ def run_episode(model, game, state, persona, render=False):
         if current_enemy_matches_won > prev_enemy_matches_won:
             match_losses += 1
             prev_enemy_matches_won = current_enemy_matches_won
-
+    end_time = time.time() 
+    duration = end_time - start_time 
+    
     final_info = info
     # Calculate shaped reward based on final game state
     shaped_reward = calculate_shaped_reward(initial_info, final_info, persona, steps)
@@ -135,6 +138,9 @@ def run_episode(model, game, state, persona, render=False):
         "match_win_rate": match_wins / max(1, match_wins + match_losses),
         "episode_win_status": episode_win_status,
         "episode_is_win": episode_is_win,
+        "time_lasted": duration,
+        "initial_info": initial_info,
+        "final_info": final_info
     }
 
 def main():
@@ -174,7 +180,8 @@ def main():
         metrics["algo"] = algo
         metrics["persona"] = args.persona
         rows.append(metrics)
-        print(f"Episode {ep}: Reward={metrics['reward']:.1f}, Matches {metrics['match_wins']}-{metrics['match_losses']} (Win Rate: {metrics['match_win_rate']*100:.1f}%)")
+        print(f"Episode {ep}: Reward={metrics['reward']:.1f}, Matches {metrics['match_wins']}-{metrics['match_losses']} " f"(Win Rate: {metrics['match_win_rate']*100:.1f}%), Duration: {metrics['time_lasted']:.1f}s")
+
 
     # Summary statistics
     mean_reward = float(np.mean([r["reward"] for r in rows]))
@@ -193,7 +200,7 @@ def main():
 
     # Save CSV
     fieldnames = ["episode", "algo", "persona", "reward", "steps", "matches_won", "enemy_matches_won", 
-                  "match_wins", "match_losses", "total_matches", "match_win_rate", "episode_win_status", "episode_is_win"]
+                  "match_wins", "match_losses", "total_matches", "match_win_rate", "episode_win_status", "episode_is_win",'final_info', 'time_lasted', 'initial_info']
     with open(args.csv_out, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
