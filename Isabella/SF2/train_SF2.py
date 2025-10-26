@@ -2,6 +2,8 @@ import retro
 import gymnasium as gym
 import argparse
 import os
+import numpy as np
+import tensorboard
 import traceback
 from stable_baselines3 import A2C, PPO
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecFrameStack
@@ -226,7 +228,6 @@ def main():
     # Output args
     parser.add_argument("--model-dir", type=str, default="./sf2_models", help="Directory to save models.")
     parser.add_argument("--log-dir", type=str, default="./sf2_logs", help="Directory for TensorBoard logs.")
-    
     
     args = parser.parse_args()
 
