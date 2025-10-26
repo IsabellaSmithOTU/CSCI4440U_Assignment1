@@ -266,6 +266,17 @@ python eval_SF2.py \
 | `--render`     | `1` = show gameplay window, `0` = headless | `0`                                             |
 | `--csv_out`    | Path to save evaluation metrics            | `logs/sf2_eval_metrics.csv`                     |
 
+9. **Reproduction**
+```
+python train_SF2.py --timesteps 500000
+```
+
+```
+python train_SF2.py --algo a2c --timesteps 500000
+```
+```
+python train_SF2.py --persona survival --timesteps 500000
+```
 8. **TroubleShooting**
 | Issue                       | Cause                           | Fix                                                          |
 | --------------------------- | ------------------------------- | ------------------------------------------------------------ |
