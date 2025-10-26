@@ -278,6 +278,7 @@ python train_SF2.py --algo a2c --timesteps 500000
 python train_SF2.py --persona survival --timesteps 500000
 ```
 8. **TroubleShooting**
+
 | Issue                       | Cause                           | Fix                                                          |
 | --------------------------- | ------------------------------- | ------------------------------------------------------------ |
 | No visuals during training  | No render mode                  | Add `render=True` when creating env on line 256 of train_SF2.py |
