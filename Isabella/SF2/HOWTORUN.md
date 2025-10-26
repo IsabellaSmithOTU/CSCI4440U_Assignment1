@@ -286,6 +286,7 @@ python train_SF2.py --persona survival --timesteps 500000
 
 
 **References**
+
 https://medium.com/aureliantactics/integrating-new-games-into-retro-gym-12b237d3ed75
 
 https://stable-retro.farama.org/index.html
