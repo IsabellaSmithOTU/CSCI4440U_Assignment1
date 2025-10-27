@@ -236,7 +236,68 @@ tensorboard --logdir=sf2_logs
 ```
 Then open your browser and visit: http://localhost:6006
 
-7. **Evaluation**
+7. **Environments: Actions, Observations, and Rewards** 
+
+The experimental environment was constructed using the Retro framework wrapped in Gymnasium, enabling a reinforcement learning interface for Street Fighter II. Each model interacted with the game environment through discrete actions, observed game states, and received scalar rewards that guided learning.
+
+#### Actions
+The action space was discrete, representing combinations of 12 player inputs such as movement and attacks.
+Key mapped actions included:
+- Movement: left, right, crouch, jump
+- Attack types: punch, kick, special move
+- Combinations: e.g., crouch + kick, jump + punch
+
+#### Observation
+The observation space consisted of preprocessed image frames from the emulator, capturing the in-game state at each timestep. Each frame was:
+- Stacked over several frames to provide temporal context (frame history),
+- Normalized to improve training stability.
+These observations allowed the agent’s convolutional neural network to infer spatial relationships between fighters, projectiles, and health bars.
+In addition to this, multiple environments were ran parallely to increase the speed of the training (`n_envs`)
+
+The metrics observed in training were:
+1. Player's Health
+2. Opponent's Health
+3. Player score
+4. Player's x position
+5. Opponent's x position
+These values were through through the stable-retro API's data.
+
+The most notable metrics observed in evaluation were:
+1. Average reward given to agent
+2. Number of Steps
+3. Matches Won
+4. Matches Lost
+5. Time Lasted
+
+#### Rewards 
+Distinct reward structures were implemented to shape agent behavior into specialized combat “personas.” The reward function was central to determining strategic tendencies, balancing aggression and survival instincts across training sessions.
+
+##### Brute Force Persona
+This persona emphasized offensive play, rewarding aggressive engagement and high-damage attacks. To avoid degenerate behavior (e.g., inactivity), the function incorporated both positive and negative incentives:
+
+- (+) Damage Dealt Reward: Encouraged the agent to inflict maximum damage on the opponent per frame.
+
+- (−) Damage Taken Penalty: Applied when the agent received damage, but kept moderate in magnitude. A smaller penalty prevented the model from converging to the local optimum of avoiding combat by standing still.
+
+- (+) Score-Based Bonus: Provided an additional reward for executing successful combos or heavy-hitting attacks, promoting varied offensive tactics.
+
+- (−) Inactivity Penalty: Discouraged periods of no movement or attack, ensuring continuous engagement during matches.
+
+Overall, this configuration produced highly aggressive behavior patterns with limited defensive adaptation.
+
+##### Survival Persona
+
+This persona prioritized defensive strategy and endurance, training the agent to maintain distance, avoid damage, and outlast opponents. The reward function was designed accordingly:
+
+- (+) Consistent Survival Reward: Small continuous positive reward for each frame survived, encouraging sustained engagement without being defeated.
+
+- (−) Damage Taken Penalty: Strong penalty proportional to health loss, reinforcing evasion and blocking behavior.
+
+- (+) Distance Maintenance Reward: Reward for maintaining an optimal distance from the opponent, promoting strategic positioning and spatial awareness.
+
+The survival persona’s structure resulted in defensive, evasive agents capable of withstanding longer bouts but often less capable of finishing matches quickly.
+
+8. **Evaluation**
 The evaluation script (eval_SF2.py) runs your trained model in the game environment and measures:
 - Episode rewards
 - Match wins/losses
