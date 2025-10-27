@@ -51,5 +51,6 @@ Comprehensive performance visualization was performed using Matplotlib, presenti
 The experimental findings confirm that PPO is a faster DRL model for agents to learn and accurately fulfill requirements. Due to lack of further data, deeper analysis could not be made as the A2C model, required several fixes after continuous model breakages, presenting a lack of time for an in-depth qualitative analysis. However, it is important to note that across the many attempts at training, PPO always maintained a faster speed, training at half the time compared to A2C. Improvements in a future project would be made, including deeper qualitative analysis and a prioritization of training 3 models only, rather than going beyond the minimum requirement.
 
 ### 2D maze Demo
-More information in `
+More information in
+https://youtu.be/2FbXlrvMrWo
 
