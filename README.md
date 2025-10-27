@@ -2,7 +2,7 @@
 DRL for Automated Testing
 This project explores the use of Deep Reinforcement Learning (DRL) to train intelligent agents capable of playing two games - Street Fighter II and a 2D Maze Environment. Using the Stable Baselines3 framework with PPO and A2C algorithms, agents were trained in a custom Gymnasium-compatible environment built with Retro and Pygame wrappers.
 
-##Street Fighter II
+## Street Fighter II
 
 ### Street Fighter II - Special Champions Edition
 ![Alt Text](https://s5.ezgif.com/tmp/ezgif-573e62cb23cc68.gif)
