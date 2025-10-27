@@ -31,7 +31,7 @@ https://youtu.be/L3RfJb5U9sQ
 ## Street Fighter II
 
 ### 2D Maze game - Retrieved from OSS)
-![Alt Text](https://s5.ezgif.com/tmp/ezgif-573e62cb23cc68.gif)
+Link to OSS: https://github.com/MattChanTK/gym-maze?tab=readme-ov-file
 
 A custom gym environment was implemented using the Pygame and numpy interface, enabling full integration with Stable Baselines3. Four trained models were compared:
 
